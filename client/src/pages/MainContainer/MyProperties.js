@@ -37,7 +37,7 @@ const MyProperties = () => {
   const [hasRestaurant, setHasRestaurant] = useState(false);
   const [isValidated, setIsValidated] = useState(false);
   const [isValidatedSecond, setIsValidatedSecond] = useState(false);
-  const [isValidatedThird, setIsValidatedThird] = useState(false);
+  const [isValidatedThird, setIsValidatedThird] = useState(true);
 
   const disabledDate = (current) => {
     // Can not select days before today and today
@@ -89,11 +89,18 @@ const MyProperties = () => {
     } catch (error) {}
   };
 
-  const validateInputThird = (bednumber, bathnumber, occupancynum) => {
+  const validateInputThird = (bednumber, bathnumber, occupNum) => {
     try {
-      if (occupancynum === 0) {
-        message.error("Occupancy Number cant be 0");
-      }
+		console.log(occupNum);
+		const negativeRegex = /^-\d+$/
+    //   if (occupNum !== "0" || bathnumber !== "0" || bednumber !== "0") {
+    //     message.error("Inputs Can Not be 0");
+    //   }
+	   if (!negativeRegex.test(occupNum) || !negativeRegex.test(bathnumber) || !negativeRegex.test(bednumber)){
+		console.log()
+		message.error("Inputs Can Not be negative");
+	  }
+	  else setIsValidatedThird(true);
     } catch (error) {}
   };
 
@@ -611,7 +618,7 @@ const MyProperties = () => {
                               Go Back
                             </button>
 
-                            {isValidated && (
+                            {!isValidated && (
                               <button
                                 id="validateButton"
                                 className="validatebtn"
@@ -625,7 +632,7 @@ const MyProperties = () => {
                               </button>
                             )}
 
-                            {!isValidated && (
+                            {isValidated && (
                               <button
                                 id="next"
                                 className="nextButton  "
@@ -890,7 +897,10 @@ const MyProperties = () => {
                                   placeholder="0"
                                   value={bednumber}
                                   onChange={(e) => {
+									console.log(e.target.value, typeof e.target.value)
                                     setBedNumber(e.target.value);
+									setIsValidatedThird(false);
+
                                   }}
                                   validation={{
                                     required: true,
@@ -914,6 +924,8 @@ const MyProperties = () => {
                                   value={bathnumber}
                                   onChange={(e) => {
                                     setBathNumber(e.target.value);
+									setIsValidatedThird(false);
+
                                   }}
                                   validation={{
                                     required: true,
@@ -935,6 +947,7 @@ const MyProperties = () => {
                                   value={occupNum}
                                   onChange={(e) => {
                                     setOccupNumber(e.target.value);
+									setIsValidatedThird(false);
                                   }}
                                   validation={{
                                     required: true,
@@ -1153,19 +1166,23 @@ const MyProperties = () => {
                               <button
                                 className="prevButton btn-submit reset"
                                 id="prev"
+								onClick={
+									() => setIsValidatedSecond(false)
+								}
                               >
                                 {" "}
                                 Back
                               </button>
                             </div>
                             <div className="col-25">
-                              {!isValidated && (
+                              {!isValidatedThird && (
                                 <button
                                   id="validateButton"
                                   className="nextButton"
                                   text="Validate"
-                                  onClick={() =>
-                                    validateInputFirst(deedno, deedyr, type)
+                                  onClick=
+								  {() =>
+                                    validateInputThird(occupNum)
                                   }
                                 >
                                   {" "}
@@ -1173,13 +1190,13 @@ const MyProperties = () => {
                                 </button>
                               )}
 
-                              {isValidated && (
+                              {isValidatedThird && (
                                 <button
                                   id="next"
                                   className="nextButton  "
                                   text="Next"
                                   onClick={() =>
-                                    validateInputFirst(deedno, deedyr, type)
+                                    validateInputThird(occupNum)
                                   }
                                 >
                                   Next
@@ -1218,7 +1235,7 @@ const MyProperties = () => {
                               </button>
                             </div>
                             <div className="col-25">
-                              {!isValidatedSecond && (
+                              {/* {!isValidatedSecond && (
                                 <button
                                   id="validateButton"
                                   className="validatebtn"
@@ -1228,18 +1245,18 @@ const MyProperties = () => {
                                   {" "}
                                   Validate
                                 </button>
-                              )}
+                              )} */}
 
-                              {isValidatedSecond && (
+                              {/* {isValidatedSecond && ( */}
                                 <button
                                   id="next"
                                   className="nextButton  "
                                   text="Next"
-                                  onClick={() => validateInputThird(occupNum)}
+                                //   onClick={() => validateInputThird(occupNum)}
                                 >
                                   Next
                                 </button>
-                              )}
+                              {/* /)} */}
                             </div>
                           </div>
                         </div>
@@ -1261,7 +1278,7 @@ const MyProperties = () => {
                               className="nextButton btn-submit end"
                               id=""
                               style={{
-                                left: "8em",
+                                left: "-7em",
                                 position: "absolute",
                               }}
                             >

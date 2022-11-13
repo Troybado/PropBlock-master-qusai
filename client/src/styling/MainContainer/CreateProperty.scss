@@ -16,6 +16,8 @@
       width: 60rem;
       padding-top: 7rem;
 
+
+
       .fullform {
         height: 75rem;
         display: flex;
@@ -36,6 +38,18 @@
       flex-direction: column;
 
       .ant-picker{
+        width: 75%;
+        margin-right: 10rem;
+        border-radius: 10px;
+        padding: 1rem;
+        color: #3daeee;
+        text-align: center;
+
+
+      }
+      #datesub{
+        color: #3daeee;
+        text-align: center;
       }
     }
     #step-3 {
